@@ -17,6 +17,25 @@ services:
         volumes:
             - ./src/:/var/www/html/
             - ./docker/logs//php.log:/var/log/fpm-php.www.log
+    mysql:
+        image: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: database
+            MYSQL_PASSWORD: password
+        networks:
+            - internal
+    phpmyadmin:
+        image: phpmyadmin
+        environment:
+            PMA_HOST: mysql
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - 9000:80
+        links:
+            - mysql
+        networks:
+            - internal
 networks:
   internal:
     driver: bridge
